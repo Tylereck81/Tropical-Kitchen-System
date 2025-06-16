@@ -1,0 +1,20 @@
+{
+  "healthy_meal": {
+    "name": {
+      "HPO1": 15.0,
+      "HO2": 15.0
+    }
+  },
+  "todays_special": {
+    "meats": {
+      "Stew Chicklen": 13.0,
+      "Prok": 14.0,
+      "Beef": 14.0
+    },
+    "sides": [
+      "macaroni ",
+      "Side salad",
+      "bacon"
+    ]
+  }
+}
