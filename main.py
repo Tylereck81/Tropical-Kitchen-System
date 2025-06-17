@@ -137,7 +137,7 @@ class TakeoutApp(tk.Tk):
                 "phone": phone,
                 "meal_type": meal_type,
                 "details": f"{healthy_name}",
-                "order": note, 
+                "note": note, 
                 "extra_price":extra_price,
                 "price": price
             }
@@ -164,7 +164,7 @@ class TakeoutApp(tk.Tk):
                 "phone": phone,
                 "meal_type": meal_type,
                 "details": f"{meat} with {side}",
-                "order": note, 
+                "note": note, 
                 "extra_price":extra_price,
                 "price": price
             }

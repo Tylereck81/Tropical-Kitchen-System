@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import json
+import os
 
 MENU_FILE = "menu.json"
 
@@ -9,42 +10,61 @@ class MenuSetupApp:
         self.root = root
         self.root.title("Menu Setup")
 
-        # Sections
+        # Section Labels
         ttk.Label(root, text="Healthy Meal Options").grid(row=0, column=0, sticky="w")
         self.healthy_frame = ttk.Frame(root)
         self.healthy_frame.grid(row=1, column=0, padx=10, pady=5)
-
-        self.healthy_meals = []
-        self.add_healthy_meal()
-
-        ttk.Button(root, text="+", command=self.add_healthy_meal).grid(row=1, column=1, sticky="n")
 
         ttk.Label(root, text="Today's Special - Meats").grid(row=2, column=0, sticky="w")
         self.meat_frame = ttk.Frame(root)
         self.meat_frame.grid(row=3, column=0, padx=10, pady=5)
 
-        self.meat_entries = []
-        self.add_meat()
-        self.add_meat()
-
-        ttk.Button(root, text="+", command=self.add_meat).grid(row=3, column=1, sticky="n")
-
         ttk.Label(root, text="Today's Special - Side Combos").grid(row=4, column=0, sticky="w")
         self.side_frame = ttk.Frame(root)
         self.side_frame.grid(row=5, column=0, padx=10, pady=5)
 
-        self.side_entries = []
-        self.add_side()
-        self.add_side()
-
+        # Add Buttons
+        ttk.Button(root, text="+", command=self.add_healthy_meal).grid(row=1, column=1, sticky="n")
+        ttk.Button(root, text="+", command=self.add_meat).grid(row=3, column=1, sticky="n")
         ttk.Button(root, text="+", command=self.add_side).grid(row=5, column=1, sticky="n")
 
-        # Buttons
+        # Save & Clear Buttons
         self.save_button = ttk.Button(root, text="Save Menu", command=self.save_menu)
         self.save_button.grid(row=6, column=0, pady=10, sticky="w", padx=10)
 
-        self.clear_button = ttk.Button(root, text="Clear Menu", command=self.clear_menu)
+        self.clear_button = ttk.Button(root, text="Clear", command=self.clear_menu)
         self.clear_button.grid(row=6, column=1, pady=10, sticky="e", padx=10)
+
+        # Lists to track widgets
+        self.healthy_meals = []
+        self.meat_entries = []
+        self.side_entries = []
+
+        # Load existing menu if available
+        existing_menu = self.load_existing_menu()
+
+        if existing_menu:
+            for name, price in existing_menu.get("healthy_meal", {}).get("name", {}).items():
+                self.add_healthy_meal(name, str(price))
+            for name, price in existing_menu.get("todays_special", {}).get("meats", {}).items():
+                self.add_meat(name, str(price))
+            for side in existing_menu.get("todays_special", {}).get("sides", []):
+                self.add_side(side)
+        else:
+            self.add_healthy_meal()
+            self.add_meat()
+            self.add_meat()
+            self.add_side()
+            self.add_side()
+
+    def load_existing_menu(self):
+        if os.path.exists(MENU_FILE):
+            try:
+                with open(MENU_FILE, "r") as f:
+                    return json.load(f)
+            except json.JSONDecodeError:
+                messagebox.showwarning("Warning", "Menu file is corrupted. Starting fresh.")
+        return None
 
     def add_healthy_meal(self, name="", price=""):
         name_entry = ttk.Entry(self.healthy_frame, width=25)
@@ -60,7 +80,6 @@ class MenuSetupApp:
 
         name_entry.grid(row=index, column=0)
         price_entry.grid(row=index, column=1)
-
         remove_btn.config(command=lambda: self.remove_entry(self.healthy_meals, self.healthy_frame, widget_tuple))
         remove_btn.grid(row=index, column=2)
 
@@ -78,7 +97,6 @@ class MenuSetupApp:
 
         name_entry.grid(row=index, column=0)
         price_entry.grid(row=index, column=1)
-
         remove_btn.config(command=lambda: self.remove_entry(self.meat_entries, self.meat_frame, widget_tuple))
         remove_btn.grid(row=index, column=2)
 
@@ -106,7 +124,9 @@ class MenuSetupApp:
                     widget.grid(row=i, column=j)
 
     def clear_menu(self):
-        for entries, frame in [(self.healthy_meals, self.healthy_frame), (self.meat_entries, self.meat_frame), (self.side_entries, self.side_frame)]:
+        for entries, frame in [(self.healthy_meals, self.healthy_frame),
+                               (self.meat_entries, self.meat_frame),
+                               (self.side_entries, self.side_frame)]:
             for widgets in entries:
                 for widget in widgets:
                     widget.destroy()
@@ -116,44 +136,33 @@ class MenuSetupApp:
         menu = {}
 
         # Healthy meals
-        # if self.healthy_meals:
-        #     healthy = self.healthy_meals[0]
-        #     try:
-        #         menu["healthy_meal"] = {
-        #             "name": healthy[0].get(),
-        #             "price": float(healthy[1].get())
-        #         }
-        #     except ValueError:
-        #         messagebox.showerror("Error", "Invalid healthy meal price")
-        #         return
-            
         healthy_options = {}
         try:
             for widgets in self.healthy_meals:
-                name = widgets[0].get()
+                name = widgets[0].get().strip()
                 price = float(widgets[1].get())
-                healthy_options[name] = price
+                if name:
+                    healthy_options[name] = price
         except ValueError:
-            messagebox.showerror("Error", "Invalid healthy option price")
+            messagebox.showerror("Error", "Invalid price in healthy meal options.")
             return
-        
-        menu["healthy_meal"] = {
-            "name": healthy_options
-        }
+
+        menu["healthy_meal"] = {"name": healthy_options}
 
         # Meats
         meats = {}
         try:
             for widgets in self.meat_entries:
-                name = widgets[0].get()
+                name = widgets[0].get().strip()
                 price = float(widgets[1].get())
-                meats[name] = price
+                if name:
+                    meats[name] = price
         except ValueError:
-            messagebox.showerror("Error", "Invalid meat price")
+            messagebox.showerror("Error", "Invalid price in meat options.")
             return
 
         # Sides
-        sides = [widgets[0].get() for widgets in self.side_entries if widgets[0].get().strip() != ""]
+        sides = [widgets[0].get().strip() for widgets in self.side_entries if widgets[0].get().strip()]
 
         menu["todays_special"] = {
             "meats": meats,

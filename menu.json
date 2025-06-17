@@ -1,20 +1,20 @@
 {
   "healthy_meal": {
     "name": {
-      "HPO1": 15.0,
-      "HO2": 15.0
+      "Garden Salad w Turkey": 15.0,
+      "Garden Salad w Chicken": 15.0
     }
   },
   "todays_special": {
     "meats": {
-      "Stew Chicklen": 13.0,
-      "Prok": 14.0,
-      "Beef": 14.0
+      "Stew Chicken": 13.0,
+      "Stew Beef": 14.0,
+      "Stew Pork": 14.0
     },
     "sides": [
-      "macaroni ",
-      "Side salad",
-      "bacon"
+      "Rice and Beans w/ Potato Salad",
+      "Rice and Beans w/ Coleslaw",
+      "Macaroni w/ Coleslaw"
     ]
   }
 }
