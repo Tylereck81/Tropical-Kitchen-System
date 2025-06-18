@@ -1,20 +1,18 @@
 {
   "healthy_meal": {
     "name": {
-      "Garden Salad w Turkey": 15.0,
-      "Garden Salad w Chicken": 15.0
+      "Garden Salad": 15.0
     }
   },
   "todays_special": {
     "meats": {
-      "Stew Chicken": 13.0,
-      "Stew Beef": 14.0,
-      "Stew Pork": 14.0
+      "Rasta Pasta": 15.0,
+      "Stew Beef": 13.0,
+      "Stew Chicken": 12.0
     },
     "sides": [
-      "Rice and Beans w/ Potato Salad",
-      "Rice and Beans w/ Coleslaw",
-      "Macaroni w/ Coleslaw"
+      "Garden Salad",
+      "Rice and Beans"
     ]
   }
 }

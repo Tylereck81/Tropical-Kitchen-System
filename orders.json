@@ -1,1 +1,122 @@
-[{"name": "Tyler", "phone": "758473", "meal_type": "Healthy Meal", "details": "Garden Salad w Chicken", "note": "", "extra_price": 0.0, "price": 15.0}, {"name": "Re", "phone": "--", "meal_type": "Today's Special", "details": "Stew Chicken with Rice and Beans w/ Potato Salad", "note": "", "extra_price": 0.0, "price": 13.0}]
+[
+  {
+    "name": "Tyler",
+    "phone": "--",
+    "meal_type": "Healthy Meal",
+    "details": "Garden Salad",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Prepping"
+  },
+  {
+    "name": "Maria",
+    "phone": "501-1234",
+    "meal_type": "Special",
+    "details": "Stewed Chicken + Rice & Beans",
+    "note": "No onions",
+    "extra_price": 2.0,
+    "price": 17.0,
+    "status": "Prepping"
+  },
+  {
+    "name": "Jason",
+    "phone": "501-8888",
+    "meal_type": "Healthy Meal",
+    "details": "Quinoa Bowl",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Pick-Up"
+  },
+  {
+    "name": "Liza",
+    "phone": "501-9999",
+    "meal_type": "Special",
+    "details": "Pork Chop + Mashed Potato",
+    "note": "Add gravy",
+    "extra_price": 1.0,
+    "price": 16.0,
+    "status": "Finished"
+  },
+  {
+    "name": "Raymond",
+    "phone": "--",
+    "meal_type": "Healthy Meal",
+    "details": "Grilled Veggies Wrap",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Finished"
+  },
+  {
+    "name": "Samantha",
+    "phone": "501-2222",
+    "meal_type": "Special",
+    "details": "Fried Fish + Fries",
+    "note": "Lime on the side",
+    "extra_price": 1.5,
+    "price": 18.0,
+    "status": "Finished"
+  },
+  {
+    "name": "James",
+    "phone": "501-3333",
+    "meal_type": "Healthy Meal",
+    "details": "Chickpea Salad",
+    "note": "Spicy",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Finished"
+  },
+  {
+    "name": "Olivia",
+    "phone": "501-4444",
+    "meal_type": "Special",
+    "details": "Beef + Coleslaw",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 16.0,
+    "status": "Finished"
+  },
+  {
+    "name": "Brian",
+    "phone": "501-5555",
+    "meal_type": "Healthy Meal",
+    "details": "Tofu Stir Fry",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Finished"
+  },
+  {
+    "name": "Alicia",
+    "phone": "501-6666",
+    "meal_type": "Special",
+    "details": "Curry Chicken + Rice",
+    "note": "Extra sauce",
+    "extra_price": 0.5,
+    "price": 16.5,
+    "status": "Finished"
+  },
+  {
+    "name": "Eli",
+    "phone": "501-7777",
+    "meal_type": "Healthy Meal",
+    "details": "Kale Smoothie + Wrap",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Finished"
+  },
+  {
+    "name": "BOBBB",
+    "phone": "501-7777",
+    "meal_type": "Healthy Meal",
+    "details": "Kale Smoothie + Wrap",
+    "note": "",
+    "extra_price": 0.0,
+    "price": 15.0,
+    "status": "Pending"
+  }
+]
