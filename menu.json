@@ -1,18 +1,17 @@
 {
   "healthy_meal": {
     "name": {
-      "Garden Salad": 15.0
+      "Salad": 15.0
     }
   },
   "todays_special": {
     "meats": {
-      "Rasta Pasta": 15.0,
-      "Stew Beef": 13.0,
-      "Stew Chicken": 12.0
+      "Stew Chicken": 13.0,
+      "Stew Beef": 14.0
     },
     "sides": [
-      "Garden Salad",
-      "Rice and Beans"
+      "Rice and beans",
+      "Salad"
     ]
   }
 }

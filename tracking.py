@@ -12,19 +12,34 @@ class DragCard(ttk.Frame):
         self.order_id = order_id
         self.order = order
         self.move_callback = move_callback
+
         self.label = ttk.Label(self, text=f"{order['name']} – {order['details']}")
-        self.label.pack(padx=5, pady=5)
+        self.label.pack(padx=5, pady=(5, 0))
+
+        self.details_frame = ttk.Frame(self)
+        self.details_frame.pack(fill="x")
+
+        details_text = (
+            f"Phone: {self.order.get('phone', '')}\n"
+            f"Meal Type: {self.order.get('meal_type', '')}\n"
+            f"Details: {self.order.get('details', '')}\n"
+            f"Note: {self.order.get('note', '')}\n"
+            f"Extra Price: ${self.order.get('extra_price', 0.0):.2f}\n"
+            f"Total Price: ${self.order.get('price', 0.0):.2f}"
+        )
+        self.details_label = ttk.Label(self.details_frame, text=details_text, justify="left")
+        self.details_label.pack(padx=5, pady=(0, 5))
+
         self.bind_events()
         self.start_x = 0
         self.start_y = 0
 
     def bind_events(self):
-        self.bind("<Button-1>", self.on_click)
-        self.bind("<B1-Motion>", self.on_drag)
-        self.bind("<ButtonRelease-1>", self.on_drop)
-        self.label.bind("<Button-1>", self.on_click)
-        self.label.bind("<B1-Motion>", self.on_drag)
-        self.label.bind("<ButtonRelease-1>", self.on_drop)
+        widgets = [self, self.label, self.details_label, self.details_frame]
+        for widget in widgets:
+            widget.bind("<Button-1>", self.on_click)
+            widget.bind("<B1-Motion>", self.on_drag)
+            widget.bind("<ButtonRelease-1>", self.on_drop)
 
     def on_click(self, event):
         self.start_x = event.x
@@ -55,37 +70,40 @@ class TrackingApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Order Tracking – Drag Anywhere")
-        self.geometry("1000x500")
+        self.geometry("1100x500")
         self.frames = {}
         self.cards = {}
         self.orders = {}
         self.canvases = {}
-        self.scrollables = {}
 
+        self.grid_columnconfigure(tuple(range(len(STATUS_ORDER))), weight=1, uniform="status")
         self.setup_ui()
         self.load_orders()
 
     def setup_ui(self):
         for idx, status in enumerate(STATUS_ORDER):
             container = ttk.LabelFrame(self, text=status)
-            container.grid(row=0, column=idx, padx=5, pady=10, sticky="n")
+            container.grid(row=0, column=idx, padx=5, pady=10, sticky="nsew")
+            container.grid_propagate(False)
+            container.configure(width=250, height=480)
 
-            canvas = tk.Canvas(container, width=240, height=450)
+            canvas = tk.Canvas(container, width=250, height=450)
+            canvas.pack(side="left", fill="both", expand=True)
+
             scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+            scrollbar.pack(side="right", fill="y")
+
             scrollable_frame = ttk.Frame(canvas)
-
-            scrollable_frame.bind(
-                "<Configure>", lambda e, c=canvas: c.configure(scrollregion=c.bbox("all"))
-            )
-
             canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
             canvas.configure(yscrollcommand=scrollbar.set)
 
-            canvas.pack(side="left", fill="both", expand=True)
-            scrollbar.pack(side="right", fill="y")
+            def on_frame_configure(event, c=canvas):
+                c.configure(scrollregion=c.bbox("all"))
 
-            canvas.bind("<Enter>", lambda e, c=canvas: c.bind("<MouseWheel>", lambda ev: c.yview_scroll(int(-1 * (ev.delta / 120)), "units")))
-            canvas.bind("<Leave>", lambda e, c=canvas: c.unbind("<MouseWheel>"))
+            scrollable_frame.bind("<Configure>", on_frame_configure)
+
+            canvas.bind("<Enter>", lambda e, c=canvas: c.bind_all("<MouseWheel>", lambda ev: c.yview_scroll(int(-1 * (ev.delta / 120)), "units")))
+            canvas.bind("<Leave>", lambda e, c=canvas: c.unbind_all("<MouseWheel>"))
 
             self.canvases[status] = canvas
             self.frames[status] = scrollable_frame
@@ -123,6 +141,6 @@ class TrackingApp(tk.Tk):
     def save_orders(self):
         with open(ORDERS_FILE, "w") as f:
             json.dump(list(self.orders.values()), f, indent=2)
-
+n  
 if __name__ == "__main__":
-    TrackingApp().mainloop() 
+    TrackingApp().mainloop()
