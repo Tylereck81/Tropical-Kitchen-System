@@ -1,7 +1,7 @@
 [
   {
     "name": "Tyler",
-    "phone": "8748932",
+    "phone": "5434",
     "meals": [
       {
         "meal_type": "Healthy Meal",
@@ -13,42 +13,28 @@
       {
         "meal_type": "Today's Special",
         "details": "Stew Chicken with Rice and beans",
-        "note": "",
+        "note": "Breast",
         "extra_price": 0.0,
         "price": 13.0
       }
     ],
-    "status": "Pending"
+    "status": "Prepping"
   },
   {
-    "name": "Reanne",
+    "name": "alex",
     "phone": "--",
     "meals": [
       {
-        "meal_type": "Today's Special",
-        "details": "Stew Chicken with Rice and beans",
-        "note": "",
-        "extra_price": 0.0,
-        "price": 13.0
-      },
-      {
         "meal_type": "Healthy Meal",
         "details": "Salad",
         "note": "",
         "extra_price": 0.0,
         "price": 15.0
-      }
-    ],
-    "status": "Pending"
-  },
-  {
-    "name": "nkj",
-    "phone": "89789",
-    "meals": [
+      },
       {
         "meal_type": "Today's Special",
         "details": "Stew Chicken with Rice and beans",
-        "note": "extra MEat",
+        "note": "extra shmeat and leg",
         "extra_price": 3.0,
         "price": 16.0
       }

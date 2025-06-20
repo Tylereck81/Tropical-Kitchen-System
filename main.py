@@ -98,18 +98,21 @@ class TakeoutApp(tk.Tk):
         scrollbar.pack(side="right", fill="y")
         self.cart_listbox.config(yscrollcommand=scrollbar.set)
 
+        self.total_label = ttk.Label(self, text="Total: $0.00")
+        self.total_label.grid(row=9, column=1, sticky="w", pady=5)
+
         button_frame = ttk.Frame(self)
-        button_frame.grid(row=9, column=1, sticky="w")
+        button_frame.grid(row=10, column=1, sticky="w")
         self.remove_button = ttk.Button(button_frame, text="Remove Selected", command=self.remove_selected_meal)
         self.remove_button.pack(side="left", padx=5)
         self.order_button = ttk.Button(button_frame, text="Finalize Order", command=self.finalize_order)
         self.order_button.pack(side="left")
 
         self.summary_button = ttk.Button(self, text="View Summary", command=self.view_summary)
-        self.summary_button.grid(row=10, column=0, columnspan=2)
+        self.summary_button.grid(row=11, column=0, columnspan=2)
 
         self.reset_button = ttk.Button(self, text="Reset Menu & Orders", command=self.reset_all)
-        self.reset_button.grid(row=11, column=0, columnspan=2, pady=10)
+        self.reset_button.grid(row=12, column=0, columnspan=2, pady=10)
 
     def update_meal_options(self, event):
         meal = self.meal_type.get()
@@ -119,6 +122,10 @@ class TakeoutApp(tk.Tk):
         else:
             self.healthy_frame.grid_remove()
             self.special_frame.grid()
+
+    def update_total(self):
+        total = sum(meal["price"] for meal in self.order_list)
+        self.total_label.config(text=f"Total: ${total:.2f}")
 
     def add_meal(self):
         meal_type = self.meal_type.get()
@@ -147,7 +154,7 @@ class TakeoutApp(tk.Tk):
 
         total_price = price + extra_price
 
-        meal_summary = f"{meal_type}: {details} - ${total_price:.2f}"
+        meal_summary = f"{details} - ${total_price:.2f}"
         if note:
             meal_summary += f" (Note: {note})"
 
@@ -160,6 +167,8 @@ class TakeoutApp(tk.Tk):
             "extra_price": extra_price,
             "price": total_price
         })
+
+        self.update_total()
 
         self.meal_type_combo.set('')
         self.healthy_combo.set('')
@@ -177,6 +186,7 @@ class TakeoutApp(tk.Tk):
             index = selected[0]
             self.cart_listbox.delete(index)
             del self.order_list[index]
+            self.update_total()
 
     def finalize_order(self):
         name = self.name_entry.get().strip()
@@ -198,6 +208,7 @@ class TakeoutApp(tk.Tk):
         messagebox.showinfo("Order Finalized", f"Order for {name} added with {len(self.order_list)} meals.")
         self.order_list.clear()
         self.cart_listbox.delete(0, tk.END)
+        self.update_total()
         self.clear_form()
 
     def clear_form(self):
@@ -233,7 +244,6 @@ class TakeoutApp(tk.Tk):
         text_widget.pack(padx=10, pady=10)
         text_widget.insert(tk.END, summary_text)
         text_widget.config(state="disabled")
-
 
     def reset_all(self):
         if messagebox.askyesno("Reset Confirmation", "This will clear all orders and the saved menu. Proceed?"):

@@ -13,22 +13,28 @@ class DragCard(ttk.Frame):
         self.order = order
         self.move_callback = move_callback
 
-        self.label = ttk.Label(self, text=f"{order['name']} – {order['details']}")
-        self.label.pack(padx=5, pady=(5, 0))
+        self.configure(width=220)
+
+        self.label = ttk.Label(self, text=f"{order['name']} – {len(order['meals'])} meals", wraplength=200)
+        self.label.pack(padx=5, pady=(5, 0), fill="x")
 
         self.details_frame = ttk.Frame(self)
         self.details_frame.pack(fill="x")
 
+        meals_text = "\n".join(
+            f"- {meal['meal_type']}: {meal['details']} (${meal['price']:.2f})" + 
+            (f" [Note: {meal['note']}]" if meal.get("note") else "")
+            for meal in self.order.get("meals", [])
+        )
+
         details_text = (
             f"Phone: {self.order.get('phone', '')}\n"
-            f"Meal Type: {self.order.get('meal_type', '')}\n"
-            f"Details: {self.order.get('details', '')}\n"
-            f"Note: {self.order.get('note', '')}\n"
-            f"Extra Price: ${self.order.get('extra_price', 0.0):.2f}\n"
-            f"Total Price: ${self.order.get('price', 0.0):.2f}"
+            f"Meals:\n{meals_text}\n"
+            f"Status: {self.order.get('status', 'Pending')}"
         )
-        self.details_label = ttk.Label(self.details_frame, text=details_text, justify="left")
-        self.details_label.pack(padx=5, pady=(0, 5))
+
+        self.details_label = ttk.Label(self.details_frame, text=details_text, justify="left", wraplength=200)
+        self.details_label.pack(padx=5, pady=(0, 5), fill="x")
 
         self.bind_events()
         self.start_x = 0
@@ -141,6 +147,6 @@ class TrackingApp(tk.Tk):
     def save_orders(self):
         with open(ORDERS_FILE, "w") as f:
             json.dump(list(self.orders.values()), f, indent=2)
-n  
+
 if __name__ == "__main__":
     TrackingApp().mainloop()
